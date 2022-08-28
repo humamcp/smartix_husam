@@ -18,5 +18,9 @@ with this application you can manage all your smart devices in one place & anywh
 - Every feature has file with same name of folder and contain exports for all feature main files
 - 
 
+## Notes
+- Json serializing packages(like freezed) is not implemented because
+the test models is very simple
+- 
 
 

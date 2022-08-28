@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smartix_husam/features/home/home.dart';
 import 'package:smartix_husam/observers/device_observer.dart';
+import 'package:smartix_husam/style/theme.dart';
 
 void main() {
   Bloc.observer = DeviceObserver();
@@ -16,9 +17,7 @@ class SmartixApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Smartix-Husam',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      theme: AppTheme.APP_THEME,
       home: const HomePage(),
     );
   }

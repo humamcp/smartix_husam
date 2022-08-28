@@ -1,2 +1,2 @@
-export 'cubit/home_cubit.dart';
-export 'view/home_page.dart';
+export 'cubit/device_cubit.dart';
+export 'view/device_page.dart';
