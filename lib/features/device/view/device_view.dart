@@ -47,8 +47,7 @@ class _DeviceViewState extends State<DeviceView> with LoadingStateMixin {
   /// add new device  for user
   ///
   _addDevice() async {
-    // check selected type & id
-    print(_deviceId);
+    // check selected type & id    
     if (_deviceId == null || _deviceId == -1) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -305,7 +304,7 @@ class _DeviceViewState extends State<DeviceView> with LoadingStateMixin {
                     ),
                     ElevatedButton(
                       onPressed: _addDevice,
-                      child: const Text('Add'),
+                      child: const Text('Add Device'),
                     ),
                   ],
                 ),
