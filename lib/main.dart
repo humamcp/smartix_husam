@@ -19,6 +19,7 @@ class SmartixApp extends StatelessWidget {
       title: 'Smartix-Husam',
       theme: AppTheme.APP_THEME,
       home: const HomePage(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }

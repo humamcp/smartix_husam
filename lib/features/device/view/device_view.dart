@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smartix_husam/features/device/cubit/device_cubit.dart';
+import 'package:smartix_husam/features/device/mockups/device_types.dart';
 import 'package:smartix_husam/features/device/model/device_model.dart';
+import 'package:smartix_husam/features/device/model/device_type.dart';
 import 'package:smartix_husam/features/device/view/devices.dart';
 import 'package:smartix_husam/mixins/loading_state_mixin.dart';
+import 'package:smartix_husam/style/theme.dart';
 import 'package:smartix_husam/utils/string_to_color.dart';
 
 class DeviceView extends StatefulWidget {
@@ -14,16 +17,16 @@ class DeviceView extends StatefulWidget {
 }
 
 class _DeviceViewState extends State<DeviceView> with LoadingStateMixin {
+  // params
+  int? _deviceId;
+  DeviceType _type = deviceTypes.first;
+
+  // methods
   @override
   void initState() {
     _initDevices();
     super.initState();
   }
-
-  // @override
-  // didChangeDependencies(){
-  //   super.didChangeDependencies();
-  // }
 
   ///
   /// This Function is used to initalize the user devices
@@ -34,179 +37,280 @@ class _DeviceViewState extends State<DeviceView> with LoadingStateMixin {
 
     // initDevices
     await BlocProvider.of<DeviceCubit>(context).init();
+    _type = deviceTypes[0];
 
+    // hide loading
+    hideLoading();
+  }
+
+  ///
+  ///
+  ///
+  _addDevice() async {
+    // check selected type & id
+    if (_deviceId == null || _deviceId == -1) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Please Enter Device ID'),
+        ),
+      );
+      return;
+    }
+
+    // close Bottom Sheet
+    Navigator.of(context).pop();
+
+    // show loading
+    showLoading();
+
+    // add device
+    await context.read<DeviceCubit>().addDevice(DeviceModel(
+          id: _deviceId!,
+          name: _type.name,
+          icon: _type.icon,
+          color: _type.color,
+          isActive: false,
+        ));
     // hide loading
     hideLoading();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height,
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: <Color>[Color(0xFFfce2e1), Colors.white]),
-      ),
-      child: isLoading
-          ? const Center(
-              child:  CircularProgressIndicator(),
-            )
-          : Padding(
-              padding: const EdgeInsets.fromLTRB(20, 15, 20, 0),
-              child: SafeArea(
-                child: Column(
-                  children: [
-                    // user welcome section
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: const [
-                        Text(
-                          "Hi, Matti",
-                          style: TextStyle(
-                              fontSize: 28,
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold),
+    return BlocConsumer<DeviceCubit, List<DeviceModel>>(
+      listener: (context, state) {},
+      builder: (context, state) {
+        return Container(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: <Color>[Color(0xFFfce2e1), Colors.white]),
+          ),
+          child: isLoading
+              ? const Center(
+                  child: CircularProgressIndicator(),
+                )
+              : Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 15, 20, 0),
+                  child: SafeArea(
+                    child: Column(
+                      children: [
+                        // user welcome section
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: const [
+                            Text(
+                              "Hi, Matti",
+                              style: TextStyle(
+                                  fontSize: 28,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            CircleAvatar(
+                              minRadius: 16,
+                              backgroundImage:
+                                  AssetImage("assets/images/user.webp"),
+                            )
+                          ],
                         ),
-                        CircleAvatar(
-                            minRadius: 16,
-                            backgroundImage:
-                                AssetImage("assets/images/user.webp"))
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 30,
-                    ),
+                        const SizedBox(
+                          height: 30,
+                        ),
 
-                    // widgets section
-                    Expanded(
-                      child: Container(
-                        width: MediaQuery.of(context).size.width,
-                        decoration: const BoxDecoration(
-                          borderRadius: BorderRadius.only(
-                            topRight: Radius.circular(30.0),
-                            topLeft: Radius.circular(30.0),
-                          ),
-                          color: Colors.white,
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(20.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              // 1- title
-                              const SizedBox(
-                                height: 5,
+                        // widgets section
+                        Expanded(
+                          child: Container(
+                            width: MediaQuery.of(context).size.width,
+                            decoration: const BoxDecoration(
+                              borderRadius: BorderRadius.only(
+                                topRight: Radius.circular(30.0),
+                                topLeft: Radius.circular(30.0),
                               ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                              color: Colors.white,
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(20.0),
+                              child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Column(
+                                  // 1- title
+                                  const SizedBox(
+                                    height: 5,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      BlocBuilder<DeviceCubit,
-                                          List<DeviceModel>>(
-                                        builder: (context, state) {
-                                          return Text(
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
                                             "A total of ${state.length} devices",
                                             style: const TextStyle(
                                                 fontSize: 15,
                                                 color: Colors.grey,
                                                 fontWeight: FontWeight.normal),
-                                          );
-                                        },
+                                          ),
+                                          const Text(
+                                            "Living Room",
+                                            style: TextStyle(
+                                                height: 1.1,
+                                                fontSize: 17,
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.w600),
+                                          ),
+                                        ],
                                       ),
-                                      const Text(
-                                        "Living Room",
-                                        style: TextStyle(
-                                            height: 1.1,
-                                            fontSize: 17,
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w600),
+                                      IconButton(
+                                        onPressed: _onAddBtn,
+                                        icon: const Icon(
+                                          Icons.add_box_outlined,
+                                          size: 28,
+                                        ),
                                       ),
                                     ],
                                   ),
-                                  Icon(
-                                    Icons.more_horiz,
-                                    color: Colors.grey[300],
-                                    size: 30,
-                                  )
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+
+                                  // 2- widgets
+                                  Expanded(
+                                    child: GridView.builder(
+                                        padding: const EdgeInsets.only(
+                                            top: 10, bottom: 20),
+                                        gridDelegate:
+                                            const SliverGridDelegateWithMaxCrossAxisExtent(
+                                                maxCrossAxisExtent: 200,
+                                                childAspectRatio: 3 / 4,
+                                                crossAxisSpacing: 20,
+                                                mainAxisSpacing: 20),
+                                        itemCount: state.length,
+                                        itemBuilder: (BuildContext ctx, index) {
+                                          return Devices(
+                                            name: state[index].name,
+                                            svg: state[index].icon,
+                                            color: state[index].color.toColor(),
+                                            isActive: state[index].isActive,
+                                            onChanged: (val) async {
+                                              showLoading();
+                                              await context
+                                                  .read<DeviceCubit>()
+                                                  .toggleDevice(state[index].id,
+                                                      isActive: val);
+                                              hideLoading();
+                                            },
+                                            onDelete: () async {
+                                              showLoading();
+                                              await context
+                                                  .read<DeviceCubit>()
+                                                  .removeDevice(state[index]);
+                                              hideLoading();
+                                            },
+                                          );
+                                        }),
+                                  ),
                                 ],
                               ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-
-                              // 2- widgets
-                              Expanded(
-                                child: GridView.builder(
-                                    padding: const EdgeInsets.only(
-                                        top: 10, bottom: 20),
-                                    gridDelegate:
-                                        const SliverGridDelegateWithMaxCrossAxisExtent(
-                                            maxCrossAxisExtent: 200,
-                                            childAspectRatio: 3 / 4,
-                                            crossAxisSpacing: 20,
-                                            mainAxisSpacing: 20),
-                                    itemCount: devices.length,
-                                    itemBuilder: (BuildContext ctx, index) {
-                                      return Devices(
-                                        name: devices[index].name,
-                                        svg: devices[index].icon,
-                                        color: devices[index].color.toColor(),
-                                        isActive: devices[index].isActive,
-                                        onChanged: (val) {
-                                          setState(() {
-                                            devices[index].isActive =
-                                                !devices[index].isActive;
-                                          });
-                                        },
-                                      );
-                                    }),
-                              ),
-                            ],
+                            ),
                           ),
                         ),
+                      ],
+                    ),
+                  ),
+                ),
+        );
+      },
+    );
+  }
+
+  ///
+  /// show add device Bottom Sheet
+  ///
+  _onAddBtn() {
+    Scaffold.of(context).showBottomSheet(
+      backgroundColor: Colors.black.withAlpha(150),
+      constraints: BoxConstraints(
+        maxWidth: MediaQuery.of(context).size.width,
+        maxHeight: MediaQuery.of(context).size.height,
+      ),
+      enableDrag: true,
+      (context) {
+        return Container(
+          alignment: Alignment.bottomCenter,
+          child: SizedBox(
+            width: MediaQuery.of(context).size.width * .5,
+            height: MediaQuery.of(context).size.height * .5,
+            child: Card(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    const SizedBox(height: 24),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          'Add device',
+                          style: AppTheme.TEXT_TITLE_STYLE,
+                        ),
+                        IconButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          icon: const Icon(
+                            Icons.close,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 24),
+                    TextField(
+                      keyboardType: TextInputType.number,
+                      onChanged: (val) => _deviceId = int.parse(val),
+                      decoration: const InputDecoration(
+                        hintText: 'Enter Device Id',
                       ),
+                    ),
+                    const SizedBox(
+                      height: 24,
+                    ),
+                    DropdownButton<DeviceType>(
+                        value: _type,
+                        items: deviceTypes.map((el) {
+                          return DropdownMenuItem<DeviceType>(
+                            value: el,
+                            child: Text(el.name),
+                          );
+                        }).toList(),
+                        onChanged: (val) {
+                          if (mounted) {
+                            setState(() {
+                              _type = val!;
+                            });
+                          }
+                        }),
+                    const SizedBox(
+                      height: 24,
+                    ),
+                    ElevatedButton(
+                      onPressed: _addDevice,
+                      child: const Text('Add'),
                     ),
                   ],
                 ),
               ),
             ),
+          ),
+        );
+      },
     );
-    // final textTheme = Theme.of(context).textTheme;
-    // Scaffold(
-    //   appBar: AppBar(title: const Text('Counter')),
-    //   body: Center(
-    //     child: BlocBuilder<DeviceCubit, int>(
-    //       builder: (context, state) {
-    //         return Text('$state', style: textTheme.headline2);
-    //       },
-    //     ),
-    //   ),
-    //   floatingActionButton: Column(
-    //     mainAxisAlignment: MainAxisAlignment.end,
-    //     crossAxisAlignment: CrossAxisAlignment.end,
-    //     children: <Widget>[
-    //       FloatingActionButton(
-    //         key: const Key('counterView_increment_floatingActionButton'),
-    //         child: const Icon(Icons.add),
-    //         onPressed: () => context.read<DeviceCubit>().increment(),
-    //       ),
-    //       const SizedBox(height: 8),
-    //       FloatingActionButton(
-    //         key: const Key('counterView_decrement_floatingActionButton'),
-    //         child: const Icon(Icons.remove),
-    //         onPressed: () => context.read<DeviceCubit>().decrement(),
-    //       ),
-    //     ],
-    //   ),
-    // );
   }
 }

@@ -10,15 +10,17 @@ class Devices extends StatelessWidget {
   final Color color;
   final bool isActive;
   final Function(bool) onChanged;
+  final VoidCallback onDelete;
 
-  const Devices(
-      {Key? key,
-      required this.name,
-      required this.svg,
-      required this.color,
-      required this.onChanged,
-      required this.isActive})
-      : super(key: key);
+  const Devices({
+    Key? key,
+    required this.name,
+    required this.svg,
+    required this.color,
+    required this.onChanged,
+    required this.isActive,
+    required this.onDelete,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +36,7 @@ class Devices extends StatelessWidget {
         openBuilder: (BuildContext context, VoidCallback _) {
           return ControlPanelPage(tag: name);
         },
-        tappable: name == "Smart AC" ? true : false,
+        tappable: isActive,
         closedBuilder: (BuildContext _, VoidCallback openContainer) {
           return AnimatedContainer(
             duration: const Duration(milliseconds: 300),
@@ -78,18 +80,32 @@ class Devices extends StatelessWidget {
                       ),
                     ],
                   ),
-                  Transform.scale(
-                    alignment: Alignment.center,
-                    scaleY: 0.8,
-                    scaleX: 0.85,
-                    child: CupertinoSwitch(
-                      onChanged: onChanged,
-                      value: isActive,
-                      activeColor: isActive
-                          ? Colors.white.withOpacity(0.4)
-                          : Colors.black,
-                      trackColor: Colors.black,
-                    ),
+
+                  // switch & delete Btn
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Transform.scale(
+                        alignment: Alignment.center,
+                        scaleY: 0.8,
+                        scaleX: 0.85,
+                        child: CupertinoSwitch(
+                          onChanged: onChanged,
+                          value: isActive,
+                          activeColor: isActive
+                              ? Colors.white.withOpacity(0.4)
+                              : Colors.black,
+                          trackColor: Colors.black,
+                        ),
+                      ),
+                      IconButton(
+                          onPressed: onDelete,
+                          icon: const Icon(
+                            Icons.delete_forever_outlined,
+                            size: 32,
+                            color: Colors.red,
+                          ))
+                    ],
                   ),
                 ],
               ),

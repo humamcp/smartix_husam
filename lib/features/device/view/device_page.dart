@@ -13,9 +13,6 @@ class DevicePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => DeviceCubit(),
-      child: const DeviceView(),
-    );
+    return const DeviceView();
   }
 }
