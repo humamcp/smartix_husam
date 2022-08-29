@@ -68,7 +68,7 @@ class Devices extends StatelessWidget {
                         height: 14,
                       ),
                       SizedBox(
-                        width: 65,
+                        width: MediaQuery.of(context).size.width * 0.2,
                         child: Text(
                           name,
                           style: TextStyle(

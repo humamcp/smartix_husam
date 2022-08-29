@@ -44,10 +44,11 @@ class _DeviceViewState extends State<DeviceView> with LoadingStateMixin {
   }
 
   ///
-  ///
+  /// add new device  for user
   ///
   _addDevice() async {
     // check selected type & id
+    print(_deviceId);
     if (_deviceId == null || _deviceId == -1) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -236,7 +237,7 @@ class _DeviceViewState extends State<DeviceView> with LoadingStateMixin {
   ///
   _onAddBtn() {
     Scaffold.of(context).showBottomSheet(
-      backgroundColor: Colors.black.withAlpha(150),
+      backgroundColor: Colors.black.withAlpha(100),
       constraints: BoxConstraints(
         maxWidth: MediaQuery.of(context).size.width,
         maxHeight: MediaQuery.of(context).size.height,
@@ -246,8 +247,8 @@ class _DeviceViewState extends State<DeviceView> with LoadingStateMixin {
         return Container(
           alignment: Alignment.bottomCenter,
           child: SizedBox(
-            width: MediaQuery.of(context).size.width * .5,
-            height: MediaQuery.of(context).size.height * .5,
+            width: MediaQuery.of(context).size.width * .9,
+            height: MediaQuery.of(context).size.height * .65,
             child: Card(
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -267,6 +268,7 @@ class _DeviceViewState extends State<DeviceView> with LoadingStateMixin {
                           },
                           icon: const Icon(
                             Icons.close,
+                            size: 32,
                           ),
                         ),
                       ],
@@ -274,7 +276,8 @@ class _DeviceViewState extends State<DeviceView> with LoadingStateMixin {
                     const SizedBox(height: 24),
                     TextField(
                       keyboardType: TextInputType.number,
-                      onChanged: (val) => _deviceId = int.parse(val),
+                      onChanged: (val) => _deviceId =
+                          val.isEmpty ? -1 : (int.tryParse(val) ?? -1),
                       decoration: const InputDecoration(
                         hintText: 'Enter Device Id',
                       ),
