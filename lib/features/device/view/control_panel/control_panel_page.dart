@@ -15,10 +15,10 @@ class ControlPanelPage extends StatefulWidget {
 
   const ControlPanelPage({Key? key, required this.tag}) : super(key: key);
   @override
-  _ControlPanelPageState createState() => _ControlPanelPageState();
+  ControlPanelPageState createState() => ControlPanelPageState();
 }
 
-class _ControlPanelPageState extends State<ControlPanelPage>
+class ControlPanelPageState extends State<ControlPanelPage>
     with TickerProviderStateMixin {
   Options option = Options.cooling;
   bool isActive = false;

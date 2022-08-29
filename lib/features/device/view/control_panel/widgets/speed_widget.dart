@@ -35,7 +35,7 @@ class SpeedWidget extends StatelessWidget {
     );
   }
 
-  ElevatedButton _button(int _speed, bool isActive) {
+  ElevatedButton _button(int speed, bool isActive) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
           onPrimary: isActive ? Colors.black : Colors.white,
@@ -45,8 +45,8 @@ class SpeedWidget extends StatelessWidget {
           shape: const CircleBorder(),
           side: BorderSide(color: Colors.white.withOpacity(0.4)),
           elevation: 0),
-      onPressed: () => changeSpeed(_speed),
-      child: Text(_speed.toString()),
+      onPressed: () => changeSpeed(speed),
+      child: Text(speed.toString()),
     );
   }
 }

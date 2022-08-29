@@ -42,7 +42,7 @@ class SingleDeviceView extends StatelessWidget {
             duration: const Duration(milliseconds: 300),
             decoration: BoxDecoration(
               borderRadius: const BorderRadius.all(
-                const Radius.circular(20.0),
+                Radius.circular(20.0),
               ),
               border: Border.all(
                 color: Colors.grey[300]!,
