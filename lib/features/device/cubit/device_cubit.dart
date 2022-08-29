@@ -6,6 +6,7 @@ import 'package:smartix_husam/features/device/model/device_model.dart';
 ///
 class DeviceCubit extends Cubit<List<DeviceModel>> {
   DeviceCubit() : super([]);
+  bool isInit = false;
 
   ///
   /// toggle device active status
@@ -30,7 +31,11 @@ class DeviceCubit extends Cubit<List<DeviceModel>> {
   ///
   Future<void> init() async {
     // check if already initalized
-    if (state.isNotEmpty) return;
+    if (!isInit) {
+      isInit = true;
+    } else {
+      return;
+    }
 
     // TODO: check if user logged in else -> go to login page
     // ...
@@ -56,7 +61,9 @@ class DeviceCubit extends Cubit<List<DeviceModel>> {
     emit([...state, model]);
   }
 
-  /// Add 1 to the current state.
+  ///
+  /// Remove User Device
+  ///
   Future<void> removeDevice(DeviceModel model) async {
     // TODO: check if user logged in else -> go to login page
     // ...

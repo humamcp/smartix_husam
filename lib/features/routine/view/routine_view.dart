@@ -107,29 +107,32 @@ class _RoutineViewState extends State<RoutineView> with LoadingStateMixin {
                     const SizedBox(height: 24),
 
                     // Routines List
-                    Expanded(
-                      child: ListView.builder(
-                        itemCount: state.length,
-                        itemBuilder: (context, index) {
-                          return SignleRoutineView(
-                            routine: state[index],
-                            onChanged: (bool value) {
-                              showLoading();
-                              BlocProvider.of<RoutineCubit>(context)
-                                  .toggleRoutine(state[index].id,
-                                      isActive: value);
-                              hideLoading();
-                            },
-                            onDelete: () {
-                              showLoading();
-                              BlocProvider.of<RoutineCubit>(context)
-                                  .removeRoutine(state[index]);
-                              hideLoading();
-                            },
-                          );
-                        },
+                    if (state.isEmpty)
+                      const Text('No Routine!')
+                    else
+                      Expanded(
+                        child: ListView.builder(
+                          itemCount: state.length,
+                          itemBuilder: (context, index) {
+                            return SignleRoutineView(
+                              routine: state[index],
+                              onChanged: (bool value) {
+                                showLoading();
+                                BlocProvider.of<RoutineCubit>(context)
+                                    .toggleRoutine(state[index].id,
+                                        isActive: value);
+                                hideLoading();
+                              },
+                              onDelete: () {
+                                showLoading();
+                                BlocProvider.of<RoutineCubit>(context)
+                                    .removeRoutine(state[index]);
+                                hideLoading();
+                              },
+                            );
+                          },
+                        ),
                       ),
-                    ),
 
                     // Add Routine button
                     Column(

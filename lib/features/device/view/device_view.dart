@@ -5,6 +5,7 @@ import 'package:smartix_husam/features/device/mockups/device_types.dart';
 import 'package:smartix_husam/features/device/model/device_model.dart';
 import 'package:smartix_husam/features/device/model/device_type.dart';
 import 'package:smartix_husam/features/device/view/single_device_view.dart';
+import 'package:smartix_husam/features/routine/cubit/routine_cubit.dart';
 import 'package:smartix_husam/mixins/loading_state_mixin.dart';
 import 'package:smartix_husam/style/theme.dart';
 import 'package:smartix_husam/utils/string_to_color.dart';
@@ -47,7 +48,7 @@ class _DeviceViewState extends State<DeviceView> with LoadingStateMixin {
   /// add new device  for user
   ///
   _addDevice() async {
-    // check selected type & id    
+    // check selected type & id
     if (_deviceId == null || _deviceId == -1) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -182,41 +183,55 @@ class _DeviceViewState extends State<DeviceView> with LoadingStateMixin {
                                   ),
 
                                   // 2- widgets
-                                  Expanded(
-                                    child: GridView.builder(
-                                        padding: const EdgeInsets.only(
-                                            top: 10, bottom: 20),
-                                        gridDelegate:
-                                            const SliverGridDelegateWithMaxCrossAxisExtent(
-                                                maxCrossAxisExtent: 200,
-                                                childAspectRatio: 3 / 4,
-                                                crossAxisSpacing: 20,
-                                                mainAxisSpacing: 20),
-                                        itemCount: state.length,
-                                        itemBuilder: (BuildContext ctx, index) {
-                                          return SingleDeviceView(
-                                            name: state[index].name,
-                                            svg: state[index].icon,
-                                            color: state[index].color.toColor(),
-                                            isActive: state[index].isActive,
-                                            onChanged: (val) async {
-                                              showLoading();
-                                              await context
-                                                  .read<DeviceCubit>()
-                                                  .toggleDevice(state[index].id,
-                                                      isActive: val);
-                                              hideLoading();
-                                            },
-                                            onDelete: () async {
-                                              showLoading();
-                                              await context
-                                                  .read<DeviceCubit>()
-                                                  .removeDevice(state[index]);
-                                              hideLoading();
-                                            },
-                                          );
-                                        }),
-                                  ),
+                                  if (state.isEmpty)
+                                    const Text('No Device!')
+                                  else
+                                    Expanded(
+                                      child: GridView.builder(
+                                          padding: const EdgeInsets.only(
+                                              top: 10, bottom: 20),
+                                          gridDelegate:
+                                              const SliverGridDelegateWithMaxCrossAxisExtent(
+                                                  maxCrossAxisExtent: 200,
+                                                  childAspectRatio: 3 / 4,
+                                                  crossAxisSpacing: 20,
+                                                  mainAxisSpacing: 20),
+                                          itemCount: state.length,
+                                          itemBuilder:
+                                              (BuildContext ctx, index) {
+                                            return SingleDeviceView(
+                                              name: state[index].name,
+                                              svg: state[index].icon,
+                                              color:
+                                                  state[index].color.toColor(),
+                                              isActive: state[index].isActive,
+                                              onChanged: (val) async {
+                                                showLoading();
+                                                await context
+                                                    .read<DeviceCubit>()
+                                                    .toggleDevice(
+                                                        state[index].id,
+                                                        isActive: val);
+                                                hideLoading();
+                                              },
+                                              onDelete: () async {
+                                                showLoading();
+
+                                                await context
+                                                    .read<DeviceCubit>()
+                                                    .removeDevice(state[index]);
+
+                                                // delete related routines
+                                                // ignore: use_build_context_synchronously
+                                                await context
+                                                    .read<RoutineCubit>()
+                                                    .removeAllByDevice(
+                                                        state[index]);
+                                                hideLoading();
+                                              },
+                                            );
+                                          }),
+                                    ),
                                 ],
                               ),
                             ),

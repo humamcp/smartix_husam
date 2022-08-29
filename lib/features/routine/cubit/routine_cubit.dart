@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:smartix_husam/features/device/model/device_model.dart';
 import 'package:smartix_husam/features/routine/model/routine_model.dart';
 
 ///
@@ -6,6 +7,7 @@ import 'package:smartix_husam/features/routine/model/routine_model.dart';
 ///
 class RoutineCubit extends Cubit<List<RoutineModel>> {
   RoutineCubit() : super([]);
+  bool isInit = false;
 
   ///
   /// toggle routine active status
@@ -30,7 +32,11 @@ class RoutineCubit extends Cubit<List<RoutineModel>> {
   ///
   Future<void> init() async {
     // check if already initalized
-    if (state.isNotEmpty) return;
+    if (!isInit) {
+      isInit = true;
+    } else {
+      return;
+    }
 
     // TODO: check if user logged in else -> go to login page
     // ...
@@ -56,7 +62,9 @@ class RoutineCubit extends Cubit<List<RoutineModel>> {
     emit([...state, model]);
   }
 
-  /// Add 1 to the current state.
+  ///
+  /// Remove User Routine
+  ///
   Future<void> removeRoutine(RoutineModel model) async {
     // TODO: check if user logged in else -> go to login page
     // ...
@@ -66,7 +74,21 @@ class RoutineCubit extends Cubit<List<RoutineModel>> {
 
     // update the state
     final nstate = state.where((el) => el.id != model.id).toList();
-    // nstate.removeWhere((element) => element.id == model.id);
+    emit(nstate);
+  }
+
+  ///
+  /// Remove User all routines related to device
+  ///
+  Future<void> removeAllByDevice(DeviceModel device) async {
+    // TODO: check if user logged in else -> go to login page
+    // ...
+
+    // TODO: in real app call api request for deleting routine
+    await Future.delayed(const Duration(milliseconds: 300));
+
+    // update the state
+    final nstate = state.where((el) => el.deviceId != device.id).toList();
     emit(nstate);
   }
 }
