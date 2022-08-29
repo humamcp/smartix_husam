@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smartix_husam/features/device/cubit/device_cubit.dart';
 import 'package:smartix_husam/features/device/view/device_page.dart';
+import 'package:smartix_husam/features/routine/cubit/routine_cubit.dart';
 import 'package:smartix_husam/features/routine/view/routine_page.dart';
+import 'package:smartix_husam/mixins/loading_state_mixin.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -13,12 +13,12 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> with LoadingStateMixin {
   // ### attributes ###
   int _index = 0; // the current viewed page
 
   // list of pages
-  List<Widget> _pages = <Widget>[
+  final List<Widget> _pages = const <Widget>[
     DevicePage(),
     RoutinePage(),
   ];
@@ -41,15 +41,22 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => DeviceCubit(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (_) => DeviceCubit(),
+        ),
+        BlocProvider(
+          create: (_) => RoutineCubit(),
+        ),
+      ],
       child: Scaffold(
         body: _pages.elementAt(_index),
         appBar: AppBar(
           title: Text(_titles.elementAt(_index)),
         ),
         bottomNavigationBar: BottomNavigationBar(
-          items: [
+          items: const [
             BottomNavigationBarItem(
               icon: Icon(Icons.devices_other),
               label: 'Devices',

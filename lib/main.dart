@@ -5,7 +5,7 @@ import 'package:smartix_husam/observers/device_observer.dart';
 import 'package:smartix_husam/style/theme.dart';
 
 void main() {
-  Bloc.observer = DeviceObserver();
+  Bloc.observer = MainObserver();
   runApp(const SmartixApp());
 }
 

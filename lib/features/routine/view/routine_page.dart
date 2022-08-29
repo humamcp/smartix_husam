@@ -1,21 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smartix_husam/features/routine/routine.dart';
 import 'package:smartix_husam/features/routine/view/routine_view.dart';
 
-/// {@template counter_page}
-/// A [StatelessWidget] which is responsible for providing a
-/// [RoutineCubit] instance to the [RoutineView].
-/// {@endtemplate}
+///
+/// This page required in case of wraping the main feature page with:
+/// 1- custom widgets
+/// 2- custom providers
+/// 3- else
+///
 class RoutinePage extends StatelessWidget {
-  /// {@macro counter_page}
   const RoutinePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => RoutineCubit(),
-      child: const RoutineView(),
-    );
+    return const RoutineView();
   }
 }

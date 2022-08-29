@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smartix_husam/features/device/cubit/device_cubit.dart';
 import 'package:smartix_husam/features/device/view/device_view.dart';
 
-/// {@template counter_page}
-/// A [StatelessWidget] which is responsible for providing a
-/// [DeviceCubit] instance to the [DeviceView].
-/// {@endtemplate}
+///
+/// This page required in case of wraping the main feature page with:
+/// 1- custom widgets
+/// 2- custom providers
+/// 3- else
+///
 class DevicePage extends StatelessWidget {
-  /// {@macro counter_page}
   const DevicePage({super.key});
 
   @override

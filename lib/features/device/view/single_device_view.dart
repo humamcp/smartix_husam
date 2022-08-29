@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:smartix_husam/features/device/view/control_panel/control_panel_page.dart';
 
-class Devices extends StatelessWidget {
+class SingleDeviceView extends StatelessWidget {
   final String name;
   final String svg;
   final Color color;
@@ -12,7 +12,7 @@ class Devices extends StatelessWidget {
   final Function(bool) onChanged;
   final VoidCallback onDelete;
 
-  const Devices({
+  const SingleDeviceView({
     Key? key,
     required this.name,
     required this.svg,
@@ -99,12 +99,13 @@ class Devices extends StatelessWidget {
                         ),
                       ),
                       IconButton(
-                          onPressed: onDelete,
-                          icon: const Icon(
-                            Icons.delete_forever_outlined,
-                            size: 32,
-                            color: Colors.red,
-                          ))
+                        onPressed: onDelete,
+                        icon: const Icon(
+                          Icons.delete_forever_outlined,
+                          size: 32,
+                          color: Colors.red,
+                        ),
+                      )
                     ],
                   ),
                 ],

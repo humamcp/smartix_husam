@@ -4,7 +4,7 @@ import 'package:smartix_husam/features/device/cubit/device_cubit.dart';
 import 'package:smartix_husam/features/device/mockups/device_types.dart';
 import 'package:smartix_husam/features/device/model/device_model.dart';
 import 'package:smartix_husam/features/device/model/device_type.dart';
-import 'package:smartix_husam/features/device/view/devices.dart';
+import 'package:smartix_husam/features/device/view/single_device_view.dart';
 import 'package:smartix_husam/mixins/loading_state_mixin.dart';
 import 'package:smartix_husam/style/theme.dart';
 import 'package:smartix_husam/utils/string_to_color.dart';
@@ -195,7 +195,7 @@ class _DeviceViewState extends State<DeviceView> with LoadingStateMixin {
                                                 mainAxisSpacing: 20),
                                         itemCount: state.length,
                                         itemBuilder: (BuildContext ctx, index) {
-                                          return Devices(
+                                          return SingleDeviceView(
                                             name: state[index].name,
                                             svg: state[index].icon,
                                             color: state[index].color.toColor(),

@@ -1,11 +1,10 @@
 import 'package:bloc/bloc.dart';
 import 'package:smartix_husam/features/device/model/device_model.dart';
 
-/// {@template home_cubit}
-/// A [Cubit] which manages an [int] as its state.
-/// {@endtemplate}
+///
+/// Manage Devices State
+///
 class DeviceCubit extends Cubit<List<DeviceModel>> {
-  /// {@macro home_cubit}
   DeviceCubit() : super([]);
 
   ///
@@ -75,25 +74,25 @@ class DeviceCubit extends Cubit<List<DeviceModel>> {
 // Mockup Devices
 List<DeviceModel> devices = [
   DeviceModel(
-      id: 23423,
+      id: 11,
       name: 'Smart Spotlight',
       isActive: true,
       color: "#ff5f5f",
       icon: 'assets/svg/light.svg'),
   DeviceModel(
-      id: 204233,
+      id: 12,
       name: 'Smart AC',
       isActive: true,
       color: "#7739ff",
       icon: 'assets/svg/ac.svg'),
   DeviceModel(
-      id: 234123,
+      id: 13,
       name: 'Smart TV',
       isActive: false,
       color: "#c9c306",
       icon: 'assets/svg/tv.svg'),
   DeviceModel(
-      id: 2352423,
+      id: 14,
       name: 'Smart Sound',
       isActive: false,
       color: "#c207db",
