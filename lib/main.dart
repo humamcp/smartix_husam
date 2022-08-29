@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smartix_husam/features/home/home.dart';
+import 'package:smartix_husam/features/intro/splash.dart';
 import 'package:smartix_husam/observers/device_observer.dart';
 import 'package:smartix_husam/style/theme.dart';
 
@@ -18,7 +18,7 @@ class SmartixApp extends StatelessWidget {
     return MaterialApp(
       title: 'Smartix-Husam',
       theme: AppTheme.APP_THEME,
-      home: const HomePage(),
+      home: const SplashScreen(),
       debugShowCheckedModeBanner: false,
     );
   }
